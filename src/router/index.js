@@ -45,7 +45,6 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const auth = getAuth()
   const sesionActiva = auth.currentUser
-  console.log(sesionActiva)
   if(sesionActiva && to.path == "/dashboard"){
     next()
   }else if(!sesionActiva && to.path == "/dashboard"){

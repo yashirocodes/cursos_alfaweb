@@ -47,8 +47,8 @@ export default {
       snackbarSuccess: false,
       snackbarFailed: false,
       usuario: {
-        email: "",
-        password: "",
+        email: "prueba@prueba.cl",
+        password: 123456,
       },
       emailRules,
     };
