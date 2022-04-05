@@ -1,8 +1,10 @@
 <template>
   <div>
     <v-app-bar dense>
+      <v-btn icon to="/"><v-icon>mdi-school</v-icon></v-btn>
       <v-app-bar-title>Cursos Alfaweb </v-app-bar-title>
-      <v-icon>mdi-school</v-icon>
+      <v-spacer></v-spacer>
+      
       <v-btn to="/courses" class="ms-4">Cursos <v-icon>mdi-account-school</v-icon> </v-btn>
       <v-spacer></v-spacer>
       <v-btn to="/register" outlined color="orange darken-4 white--text"
@@ -29,7 +31,7 @@
         </v-list-item>
       </template>
 
-      <v-divider></v-divider>
+      <v-spacer></v-spacer>
 
       <v-list dense>
         <v-list-item link to="/dashboard">

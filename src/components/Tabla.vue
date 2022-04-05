@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <v-data-table :headers="headers" :items="cursos" class="elevation-1">
       <template v-slot:item.actions="{ item }">
@@ -7,16 +8,22 @@
         </v-icon>
         <v-icon small @click="deleteCurso(item.id)"> mdi-delete </v-icon>
       </template>
-      <template v-slot:item.data.precio="{ item }">
-        ${{ formatNumber(item.data.precio) }}
+      <template v-slot:item.data.costo="{ item }">
+        ${{ formatNumber(item.data.costo) }}
       </template>
       <template v-slot:item.data.fecha="{ item }">
         {{ item.data.fecha.toDate().toLocaleDateString() }}
       </template>
+      <template v-slot:item.data.estado="{ item }">
+        <v-chip v-if="item.data.estado === false" color="red lighten-1" outlined
+          >NO</v-chip
+        >
+        <v-chip v-else color="green lighten-2" outlined>SI</v-chip>
+      </template>
     </v-data-table>
 
     <v-dialog v-model="dialog" width="500">
-      <v-card class="pa-5">
+      <v-card class="pa-5 scrollbar">
         <v-text-field
           v-model="editedCurso.nombre"
           label="Nombre del curso"
@@ -57,11 +64,15 @@
           label="Descripción del curso"
           required
         ></v-textarea>
-        <v-text-field
-          v-model="editedCurso.fecha"
-          label="Fecha del curso"
-          required
-        ></v-text-field>
+        <v-container>
+          <v-switch
+            v-model="localSwitch"
+            :label="localSwitch ? 'Curso terminado : Si' : 'Curso terminado : No'"
+          ></v-switch>
+        </v-container>
+        <v-container>
+          <v-date-picker full-width v-model="editedCurso.fecha"></v-date-picker>
+        </v-container>
         <v-btn color="warning" class="mr-4" @click="actualizarCurso">
           Actualizar
         </v-btn>
@@ -72,9 +83,12 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import { Timestamp } from "@firebase/firestore";
 export default {
   data() {
     return {
+      localSwitch: false,
+      state: false,
       dialog: false,
       curso: {
         nombre: "",
@@ -85,6 +99,7 @@ export default {
         costo: "",
         codigo: "",
         descripcion: "",
+        estado: "",
       },
       editedIndex: null,
       editedCurso: {},
@@ -114,6 +129,10 @@ export default {
           value: "data.descripcion",
         },
         {
+          text: "Curso terminado",
+          value: "data.estado",
+        },
+        {
           text: "Fecha de ingreso",
           value: "data.fecha",
         },
@@ -126,6 +145,10 @@ export default {
   },
   methods: {
     ...mapActions(["eliminar_Curso", "update_Curso"]),
+    //FORMATO DE NUMEROS
+    formatNumber(number) {
+      return new Intl.NumberFormat("de-DE").format(number);
+    },
     //eliminar curso
     async deleteCurso(id) {
       const confirmacion = confirm("¿Estas seguro de eliminar este curso?");
@@ -139,11 +162,26 @@ export default {
       this.editedIndex = idCurso;
       const cursoEncontrado = this.cursos.find((curso) => curso.id === idCurso);
       this.editedCurso = { ...cursoEncontrado.data };
+      this.editedCurso.fecha = this.editedCurso.fecha
+        .toDate()
+        .toISOString()
+        .substr(0, 10);
       this.dialog = true;
     },
     //actualizar curso
     async actualizarCurso() {
       const { editedIndex: id, editedCurso: curso } = this;
+
+      // convertir string a timestamp
+      const fechaString = curso.fecha;
+      console.log(fechaString);
+      const convertirFechaTimestamp = await Timestamp.fromDate(
+        new Date(fechaString)
+      );
+      curso.fecha = convertirFechaTimestamp;
+      // fin 
+      curso.estado = this.localSwitch;
+      console.log(curso.fecha);
       const payload = { id, curso };
       await this.update_Curso(payload);
       alert("Curso actualizado con exito");

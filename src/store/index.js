@@ -3,17 +3,72 @@ import Vuex from "vuex";
 
 //FIREBASE
 import {
-  getFirestore, collection, query, onSnapshot, addDoc,
-  doc, deleteDoc, updateDoc, where
+  getFirestore,
+  collection,
+  query,
+  onSnapshot,
+  addDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+  getters: {
+    cantidadDeCursos(state) {
+      return state.cursos.length;
+    },
+    cantidadDeAlumnos(state) {
+      const { cursos } = state;
+      const sumaDeAlumnos = cursos.reduce((acumulador, curso) => {
+        return acumulador + curso.data.inscritos;
+      }, 0);
+      return sumaDeAlumnos;
+    },
+    cantidadCursosTerminados(state) {
+      const { cursos } = state;
+      const sumaDeCursosTerminados = cursos.reduce((acumulador, curso) => {
+        return acumulador + (curso.data.estado ? 1 : 0);
+      }, 0);
+      return sumaDeCursosTerminados;
+    },
+    cantidadCursosPorTerminar(state) {
+      const { cursos } = state;
+      const sumaDeCursosTerminados = cursos.reduce((acumulador, curso) => {
+        return acumulador + (curso.data.estado ? 0 : 1);
+      }, 0);
+      return sumaDeCursosTerminados;
+    },
+    cantidadDeCupos(state) {
+      const { cursos } = state;
+      const sumaDeCupos = cursos.reduce((acumulador, curso) => {
+        return acumulador + curso.data.cupos;
+      }, 0);
+      return sumaDeCupos;
+    },
+    cuposRestantes(state) {
+      const { cursos } = state;
+      const sumaDeCupos = cursos.reduce((acumulador, curso) => {
+        return acumulador + curso.data.cupos;
+      }, 0);
+      const sumaDeAlumnos = cursos.reduce((acumulador, curso) => {
+        return acumulador + curso.data.inscritos;
+      }, 0);
+      return sumaDeCupos - sumaDeAlumnos;
+    },
+  },
   state: {
     user: null,
-    cursos:[]
+    cursos: [],
   },
   mutations: {
     SET_USER(state, user) {
@@ -22,10 +77,10 @@ export default new Vuex.Store({
     SIGN_OUT(state) {
       state.user = null;
     },
-    SET_CURSOS(state, cursos){
-        state.cursos = cursos;
+    SET_CURSOS(state, cursos) {
+      state.cursos = cursos;
+    },
   },
-},
   actions: {
     //REGISTRAR USUARIO
     async register_User(context, { email, password }) {
@@ -66,33 +121,32 @@ export default new Vuex.Store({
       await addDoc(collectionRef, curso);
     },
     //OBTENER CURSOS
-    async obtener_Cursos({commit}){
+    async obtener_Cursos({ commit }) {
       const db = getFirestore();
       const q = query(collection(db, "cursos"));
-      onSnapshot(q,(querySnapshot)=>{
+      onSnapshot(q, (querySnapshot) => {
         const cursos = [];
-        querySnapshot.forEach((doc)=>{
+        querySnapshot.forEach((doc) => {
           const curso = {
             id: doc.id,
-            data: doc.data()
-          }
-          cursos.push(curso)
-        })
-        commit("SET_CURSOS",cursos)
-      })
+            data: doc.data(),
+          };
+          cursos.push(curso);
+        });
+        commit("SET_CURSOS", cursos);
+      });
     },
     //ELIMINAR CURSO
-    async eliminar_Curso(context, idCurso){
-      const db = getFirestore()
-      const docRef = doc(db, "cursos", idCurso)
-      await deleteDoc(docRef)
+    async eliminar_Curso(context, idCurso) {
+      const db = getFirestore();
+      const docRef = doc(db, "cursos", idCurso);
+      await deleteDoc(docRef);
     },
     //ACTUALIZAR CURSO
-    async update_Curso(context, {id, curso}){
-      const db = getFirestore()
-      const docRef = doc(db, "cursos", id)
-      await updateDoc(docRef, curso)
+    async update_Curso(context, { id, curso }) {
+      const db = getFirestore();
+      const docRef = doc(db, "cursos", id);
+      await updateDoc(docRef, curso);
     },
-    
   },
 });
