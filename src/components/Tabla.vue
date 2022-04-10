@@ -84,6 +84,8 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import { Timestamp } from "@firebase/firestore";
+import moment from 'moment'
+
 export default {
   data() {
     return {
@@ -162,23 +164,21 @@ export default {
       this.editedIndex = idCurso;
       const cursoEncontrado = this.cursos.find((curso) => curso.id === idCurso);
       this.editedCurso = { ...cursoEncontrado.data };
-      this.editedCurso.fecha = this.editedCurso.fecha
-        .toDate()
-        .toISOString()
-        .substr(0, 10);
+      const fechaTimestamp = cursoEncontrado.data.fecha;
+      const fechaFormateada = moment(fechaTimestamp.toDate()).format("YYYY-MM-DD");
+      console.log(fechaFormateada);
+      this.editedCurso.fecha = fechaFormateada;
       this.dialog = true;
     },
     //actualizar curso
     async actualizarCurso() {
       const { editedIndex: id, editedCurso: curso } = this;
-
       // convertir string a timestamp
       const fechaString = curso.fecha;
-      console.log(fechaString);
-      const convertirFechaTimestamp = await Timestamp.fromDate(
-        new Date(fechaString)
-      );
-      curso.fecha = convertirFechaTimestamp;
+      const date = new Date()
+      const fechaStringToUnix = await date.setFullYear(fechaString.substring(0, 4), fechaString.substring(5, 7) - 1, fechaString.substring(8, 10));
+      const UnixToTimeStamp = await Timestamp.fromDate(new Date(fechaStringToUnix));
+      curso.fecha = UnixToTimeStamp;
       // fin 
       curso.estado = this.localSwitch;
       console.log(curso.fecha);

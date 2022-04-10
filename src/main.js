@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import './common/fonts.css'
+import VueMoment from 'vue-moment'
+import moment from 'moment-timezone'
+
 
 /* FIREBASE */
 
@@ -23,7 +27,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 /*END OF FIRE BASE CONFIGURATION*/
-
+import VueTypedJs from 'vue-typed-js'
+Vue.use(VueTypedJs)
+Vue.use(require('vue-moment'));
 
 Vue.config.productionTip = false
 
@@ -31,5 +37,8 @@ new Vue({
   router,
   store,
   vuetify,
+  VueMoment,
+  moment,
+
   render: h => h(App)
 }).$mount('#app')

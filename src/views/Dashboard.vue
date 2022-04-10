@@ -57,7 +57,9 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <Tabla />
+    <v-container class="mb-8">
+      <Tabla />
+    </v-container>
     <Contadores />
   </div>
 </template>

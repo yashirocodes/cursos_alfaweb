@@ -1,11 +1,13 @@
 <template>
   <div>
-    <v-app-bar dense>
-      <v-btn icon to="/"><v-icon>mdi-school</v-icon></v-btn>
-      <v-app-bar-title>Cursos Alfaweb </v-app-bar-title>
-      <v-spacer></v-spacer>
-      
-      <v-btn to="/courses" class="ms-4">Cursos <v-icon>mdi-account-school</v-icon> </v-btn>
+    <v-app-bar dense height="100px" color="blue-grey darken-4">
+      <v-btn class="ms-8 me-8" color="white" text to="/"
+        ><img class="logoImg" src="../assets/logo.png" alt=""
+      /></v-btn>
+
+      <v-btn to="/courses" class="ms-8"
+        >Cursos <v-icon>mdi-account-school</v-icon>
+      </v-btn>
       <v-spacer></v-spacer>
       <v-btn to="/register" outlined color="orange darken-4 white--text"
         >Registrarse <v-icon class="ms-2">mdi-account-plus</v-icon></v-btn
@@ -13,19 +15,30 @@
       <v-btn to="/login" class="ms-2" color="indigo darken-1 white--text"
         >Iniciar sesion <v-icon class="ms-2">mdi-login-variant</v-icon></v-btn
       >
-      
-      <v-app-bar-nav-icon v-if="user" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-app-bar-nav-icon
+      color="white"
+        v-if="user"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
     </v-app-bar>
     <!-- NAVIGATOR DRAWER -->
-    <v-navigation-drawer v-if="user" :user="user" absolute temporary right v-model="drawer">
+    <v-navigation-drawer
+      v-if="user"
+      :user="user"
+      absolute
+      temporary
+      right
+      v-model="drawer"
+    >
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img :src="user.photoURL" alt="">
+            <img :src="user.photoURL" alt="" />
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{user.displayName}}</v-list-item-title>
+            <v-list-item-title>{{ user.displayName }}</v-list-item-title>
             <v-list-item-subtitle>Logged In</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -38,17 +51,13 @@
           <v-list-item-icon>
             <v-icon>mdi-cog</v-icon>
           </v-list-item-icon>
-          <v-list-item-content>
-            Administracion
-          </v-list-item-content>
+          <v-list-item-content> Administracion </v-list-item-content>
         </v-list-item>
         <v-list-item link @click="cerrarSesion">
           <v-list-item-icon>
             <v-icon>mdi-logout-variant</v-icon>
           </v-list-item-icon>
-          <v-list-item-content>
-            Cerrar Sesion
-          </v-list-item-content>
+          <v-list-item-content> Cerrar Sesion </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -62,17 +71,16 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
-    
   }),
-  methods:{
+  methods: {
     ...mapActions(["cerrar_Sesion"]),
-    async cerrarSesion(){
-      await this.cerrar_Sesion()
-      alert("sesion cerrada con éxito")
-      this.$router.push("/")
-    }
+    async cerrarSesion() {
+      await this.cerrar_Sesion();
+      alert("sesion cerrada con éxito");
+      this.$router.push("/");
+    },
   },
-  computed:{
+  computed: {
     ...mapState(["user"]),
   },
   watch: {
@@ -84,4 +92,8 @@ export default {
 </script>
 
 <style>
+.logoImg {
+  width: 140px;
+  margin-left: 1rem;
+}
 </style>
