@@ -1,50 +1,67 @@
 <template>
   <div>
-    <v-col cols="12" md="4" class="ma-auto">
-      <v-form ref="form">
-        <!-- NOMBRE -->
-        <v-text-field
-          v-model="usuario.displayName"
-          :counter="15"
-          :rules="nameRules"
-          label="Nombre"
-          required
-        ></v-text-field>
-        <!-- FOTO -->
-        <v-text-field v-model="usuario.photoURL" label="Imagen"></v-text-field>
-        <!-- EMAIL -->
-        <v-text-field
-          v-model="usuario.email"
-          :rules="emailRules"
-          label="E-mail"
-          required
-        ></v-text-field>
-        <!-- PASSWORD -->
-        <v-text-field
-          v-model="usuario.password"
-          label="Password"
-          :rules="passwordRules"
-          hint="Minimo 6 caracteres"
-          required
-        ></v-text-field>
+    <v-col cols="12" md="8" class="ma-auto">
+      <v-card class="mt-12">
+        <h2 class="text-center pt-5">Registrar nueva cuenta</h2>
+        <v-form ref="form" class="pa-7">
+          <!-- NOMBRE -->
+          <v-text-field
+            v-model="usuario.displayName"
+            :counter="15"
+            :rules="nameRules"
+            label="Nombre"
+            required
+          ></v-text-field>
+          <!-- FOTO -->
+          <v-text-field
+            v-model="usuario.photoURL"
+            label="Imagen"
+            hint="Asegurate que el enlace termine en JPG o PNG"
+          ></v-text-field>
+          <!-- EMAIL -->
+          <v-text-field
+            v-model="usuario.email"
+            :rules="emailRules"
+            label="E-mail"
+            required
+            hint="Ejemplo : ejemplo@ejemplo.com"
+          ></v-text-field>
+          <!-- PASSWORD -->
+          <v-text-field
+            v-model="usuario.password"
+            label="Password"
+            :rules="passwordRules"
+            hint="Minimo 6 caracteres"
+            required
+            class="mb-5"
+          ></v-text-field>
+          <v-row >
+            <v-col class="d-flex justify-center" cols="12"  lg="4">
+              <v-btn
+                color="indigo darken-1 white--text"
+                class="mr-4"
+                @click="registerAndAddUser"
+                :loading="loading"
+                elevation="8"
+              >
+                Registrarse
+              </v-btn>
+            </v-col>
 
-        <v-btn
-          color="success"
-          class="mr-4"
-          @click="registerAndAddUser"
-          :loading="loading"
-        >
-          Registrarse
-        </v-btn>
+            <v-col cols="12"  lg="4" class="d-flex justify-center">
+              <v-btn outlined color="error" @click="reset">
+                Limpiar Formulario
+              </v-btn>
+            </v-col>
 
-        <v-btn color="error" class="mr-4" @click="reset">
-          Limpiar Formulario
-        </v-btn>
-
-        <v-btn color="warning" @click="resetValidation">
-          Resetear Validación
-        </v-btn>
-      </v-form>
+            <v-col cols="12" lg="4" class="d-flex justify-center">
+              <v-btn outlined color="warning" @click="resetValidation">
+                Resetear Validación
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-card>
     </v-col>
     <v-snackbar color="green" top centered v-model="snackbarSuccess">
       Usuario registrado con éxito
@@ -84,7 +101,7 @@ export default {
         this.loading = true;
         await this.register_User(usuario);
         delete usuario.password;
-        
+
         await this.add_User(usuario);
         this.snackbarSuccess = true;
       } catch (error) {

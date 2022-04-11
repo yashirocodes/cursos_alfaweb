@@ -1,23 +1,38 @@
 <template>
   <div>
     <v-app-bar dense height="100px" color="blue-grey darken-4">
-      <v-btn class="ms-8 me-8" color="white" text to="/"
+      <v-btn tile class="ms-5 me-2" color="white" text to="/"
         ><img class="logoImg" src="../assets/logo.png" alt=""
       /></v-btn>
-
-      <v-btn to="/courses" class="ms-8"
-        >Cursos <v-icon>mdi-account-school</v-icon>
-      </v-btn>
       <v-spacer></v-spacer>
-      <v-btn to="/register" outlined color="orange darken-4 white--text"
-        >Registrarse <v-icon class="ms-2">mdi-account-plus</v-icon></v-btn
-      >
-      <v-btn to="/login" class="ms-2" color="indigo darken-1 white--text"
-        >Iniciar sesion <v-icon class="ms-2">mdi-login-variant</v-icon></v-btn
-      >
+
+      <v-menu v-if="!user" offset-y transition="slide-x-transition" bottom right>
+        <template v-slot:activator="{ on }">
+          <v-btn class="deep-orange" color="primary" dark v-on="on">
+           <v-icon>
+            mdi-account-circle
+           </v-icon>
+          </v-btn>
+        </template>
+        <v-list class="d-flex flex-column align-center">
+          <v-list-item>
+            <v-btn
+              to="/register"
+              outlined
+              color="deep-orange lighten-1 white--text"
+              >Registrarse <v-icon class="ms-2">mdi-account-plus</v-icon>
+            </v-btn>
+          </v-list-item>
+          <v-list-item >
+            <v-btn to="/login" color="indigo darken-1 white--text"
+              >Iniciar sesion <v-icon class="ms-2">mdi-login-variant</v-icon>
+            </v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-app-bar-nav-icon
-      color="white"
+        color="white"
         v-if="user"
         @click.stop="drawer = !drawer"
       ></v-app-bar-nav-icon>

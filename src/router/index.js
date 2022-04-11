@@ -42,17 +42,17 @@ const router = new VueRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   const auth = getAuth()
-//   const sesionActiva = auth.currentUser
-//   if(sesionActiva && to.path == "/dashboard"){
-//     next()
-//   }else if(!sesionActiva && to.path == "/dashboard"){
-//     alert("lo sentimos, no tienes permisos de estar aquí, porfavor inicia sesion")
-//     next("/login")
-//   }else{
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  const auth = getAuth()
+  const sesionActiva = auth.currentUser
+  if(sesionActiva && to.path == "/dashboard"){
+    next()
+  }else if(!sesionActiva && to.path == "/dashboard"){
+    alert("lo sentimos, no tienes permisos de estar aquí, porfavor inicia sesion")
+    next("/login")
+  }else{
+    next()
+  }
+})
 
 export default router

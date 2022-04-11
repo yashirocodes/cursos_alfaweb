@@ -14,7 +14,7 @@
             :typeSpeed="80"
             :smartBackspace="true"
           >
-            <h2>Hola <span class="typing"></span></h2>
+            <h3>Hola <span class="typing"></span></h3>
           </vue-typed-js>
           <v-btn  elevation="10" color="orange darken-2 white--text" to="/courses">Descubrir Cursos </v-btn>
         </v-col>
@@ -72,7 +72,7 @@ export default {
   color: rgb(255, 157, 36);
   font-family: 'TTRationalistBold';
 }
-h2 {
+h3 {
   color: wheat;
   font-family: 'TTRationalistNormal';
 }
