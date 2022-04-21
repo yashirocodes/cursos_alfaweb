@@ -1,7 +1,9 @@
 <template>
   <div>
-    <v-col cols="12" md="6" class="ma-auto">
-      <v-form ref="form">
+    <v-col cols="12" md="8" lg="6" class="ma-auto mt-10">
+      <h2 class="text-center">Inicia Sesión</h2>
+      <v-card class="pa-8">
+        <v-form ref="form">
         <v-text-field
           :rules="emailRules"
           v-model="usuario.email"
@@ -15,16 +17,17 @@
           required
         >
         </v-text-field>
-        <v-container class="d-flex justify-space-between">
-          <v-btn color="primary" @click="iniciarSesion" :loading="loading"
+        <v-container class="d-flex flex-column align-center">
+          <v-btn width="200px" class="mb-5" color="primary" @click="iniciarSesion" :loading="loading"
             >Iniciar Sesión</v-btn
           >
-          <v-btn color="danger" @click="reset">Limpiar Formulario</v-btn>
-          <v-btn color="warning" @click="resetValidation"
+          <v-btn width="200px" class="mb-5" color="danger" @click="reset">Limpiar Formulario</v-btn>
+          <v-btn width="200px" color="warning" @click="resetValidation"
             >Limpiar Validación</v-btn
           >
         </v-container>
       </v-form>
+      </v-card>
     </v-col>
     <v-snackbar color="green" top centered v-model="snackbarSuccess">
       Inicio de sesión correcto

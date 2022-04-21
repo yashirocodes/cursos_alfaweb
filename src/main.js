@@ -6,7 +6,9 @@ import vuetify from './plugins/vuetify'
 import './common/fonts.css'
 import VueMoment from 'vue-moment'
 import moment from 'moment-timezone'
-
+import VueSweetalert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
+Vue.use(VueSweetalert2);
 
 /* FIREBASE */
 
@@ -30,6 +32,7 @@ const app = initializeApp(firebaseConfig);
 import VueTypedJs from 'vue-typed-js'
 Vue.use(VueTypedJs)
 Vue.use(require('vue-moment'));
+
 
 Vue.config.productionTip = false
 

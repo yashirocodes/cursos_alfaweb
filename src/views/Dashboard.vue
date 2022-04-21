@@ -3,7 +3,7 @@
     
     <v-container class="d-flex justify-center my-5">
       <h2>Administración</h2>
-      <v-btn color="red white--text" class="ms-5" @click="cursoModal"
+      <v-btn small color="red white--text" class="ms-5" @click="cursoModal"
         >Agregar Curso</v-btn
       >
     </v-container>

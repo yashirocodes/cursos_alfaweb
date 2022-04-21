@@ -156,7 +156,11 @@ export default {
       const confirmacion = confirm("¿Estas seguro de eliminar este curso?");
       if (confirmacion) {
         await this.eliminar_Curso(id);
-        alert("Curso eliminado con exíto");
+        this.$swal.fire({
+          type: "success",
+          title: "Curso eliminado",
+          text: "El curso ha sido eliminado con éxito",
+        });
       }
     },
     //editar curso
